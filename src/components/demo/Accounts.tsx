@@ -21,18 +21,18 @@ const Account: React.FC<{
     key={account.address}
     onClick={onSelect}
     className={clsx(
-      "hover:border-slate-200 border cursor-pointer px-2 py-1 rounded-lg flex items-center justify-between pr-4",
-      selected ? "border-slate-200" : "border-slate-50/0"
+      "border cursor-pointer px-2 py-1 rounded-lg flex items-center justify-between pr-4",
+      selected ? "border-stone-400" : "border-stone-50/0 hover:bg-stone-800/50"
     )}
   >
     <div className="flex items-center gap-4">
       <Identicon value={account.address} size={32} theme="polkadot" />
       <div className="flex flex-col">
         <div className="text-white text-base">{account.meta.name}</div>
-        <div className="text-gray-500 text-xs">{truncateMiddle(account.address, 5, 5, "...")}</div>
+        <div className="text-stone-500 text-xs">{truncateMiddle(account.address, 5, 5, "...")}</div>
       </div>
     </div>
-    <div className={clsx("h-2 w-2 rounded-full", selected ? "bg-primary" : "bg-slate-800")} />
+    <div className={clsx("h-2 w-2 rounded-full", selected ? "bg-stone-200" : "bg-stone-800")} />
   </div>
 )
 
@@ -70,7 +70,7 @@ export const Accounts: React.FC<Props> = ({ accounts, onCancel }) => {
       })
 
       const signature = await siwsMessage.sign(selectedAccount.meta.source)
-      console.log(signature)
+
       await fetch("/api/verify")
     } catch (e: any) {
       toast(e?.message ?? "An error occurred")
@@ -82,8 +82,8 @@ export const Accounts: React.FC<Props> = ({ accounts, onCancel }) => {
   return (
     <div className="h-full flex flex-1 flex-col">
       <p className="text-white text-lg">Sign In</p>
-      <p className="text-slate-400">Select an account to sign in with.</p>
-      <div className="my-4 flex flex-col h-full overflow-y-auto gap-3">
+      <p className="text-stone-500">Select an account to sign in with.</p>
+      <div className="my-4 flex flex-col h-full overflow-y-auto gap-3 p-2 rounded-lg border border-stone-800">
         {accounts.length > 0 ? (
           accounts.map((account) => (
             <Account
@@ -94,7 +94,7 @@ export const Accounts: React.FC<Props> = ({ accounts, onCancel }) => {
             />
           ))
         ) : (
-          <p className="text-slate-500 text-center mt-4">
+          <p className="text-stone-500 text-center mt-4">
             No account connected.
             <br />
             Connect at least 1 account to sign in with.
@@ -103,7 +103,7 @@ export const Accounts: React.FC<Props> = ({ accounts, onCancel }) => {
       </div>
       <div className="grid gap-3">
         <Button disabled={!selectedAccount || signingIn} onClick={handleSignIn}>
-          {signingIn ? "Waiting for Signature..." : "Sign In"}
+          {signingIn ? "Signing In..." : "Sign In"}
         </Button>
         <Button variant="outline" onClick={onCancel}>
           Cancel

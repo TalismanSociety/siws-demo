@@ -30,8 +30,8 @@ export const ConnectWallet: React.FC<Props> = ({ onAccounts }) => {
 
   return (
     <div className="flex flex-col">
-      <p className="text-white text-lg">Connect Wallet</p>
-      <p className="text-slate-400 mb-4">Connect your wallet to sign in.</p>
+      <p className="text-white text-lg">Try it out</p>
+      <p className="text-stone-500 mb-4">Connect your wallet to try out this cloneable demo app.</p>
       <Button onClick={handleConnectWallet} disabled={connecting}>
         {connecting ? "Connecting wallet..." : "Connect Wallet"}
       </Button>

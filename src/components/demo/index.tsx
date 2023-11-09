@@ -8,7 +8,7 @@ export const Demo = () => {
 
   return (
     <div className="w-full">
-      <div className="border-slate-200 border p-4 rounded-xl w-full h-96 flex flex-col flex-1">
+      <div className="border-stone-800 border p-4 rounded-xl w-full h-96 flex flex-col flex-1">
         {accounts ? (
           <Accounts accounts={accounts} onCancel={() => setAccounts(undefined)} />
         ) : (

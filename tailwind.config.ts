@@ -1,5 +1,4 @@
 /** @type {import('tailwindcss').Config} */
-import colors from "tailwindcss/colors"
 
 module.exports = {
   darkMode: ["class"],
@@ -9,10 +8,6 @@ module.exports = {
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
-    colors: {
-      ...colors,
-      primary: "#d5ff5c",
-    },
     container: {
       center: true,
       padding: "2rem",
@@ -21,6 +16,9 @@ module.exports = {
       },
     },
     extend: {
+      fontFamily: {
+        unbounded: ["var(--font-unbounded)"],
+      },
       keyframes: {
         "accordion-down": {
           from: { height: 0 },
