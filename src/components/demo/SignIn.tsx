@@ -1,43 +1,22 @@
 import { InjectedAccountWithMeta } from "@polkadot/extension-inject/types"
-import Identicon from "@polkadot/react-identicon"
-import truncateMiddle from "truncate-middle"
 import { Button } from "@/components/ui/button"
-import { useState } from "react"
-import clsx from "clsx"
+import { useEffect, useState } from "react"
 import { SiwsMessage } from "../../siws/SiwsMessage"
 import { Address } from "../../siws/utils"
 import { useToast } from "../ui/use-toast"
+import { Account } from "./Account"
+import { ToastAction } from "../ui/toast"
+import { SIWS_DOMAIN } from "../../lib/constants"
+
 type Props = {
   accounts: InjectedAccountWithMeta[]
   onCancel: () => void
+  onSignedIn: (account: InjectedAccountWithMeta, jwtToken: string) => void
 }
 
-const Account: React.FC<{
-  onSelect: () => void
-  account: InjectedAccountWithMeta
-  selected: boolean
-}> = ({ account, selected, onSelect }) => (
-  <div
-    key={account.address}
-    onClick={onSelect}
-    className={clsx(
-      "border cursor-pointer px-2 py-1 rounded-lg flex items-center justify-between pr-4",
-      selected ? "border-stone-400" : "border-stone-50/0 hover:bg-stone-800/50"
-    )}
-  >
-    <div className="flex items-center gap-4">
-      <Identicon value={account.address} size={32} theme="polkadot" />
-      <div className="flex flex-col">
-        <div className="text-white text-base">{account.meta.name}</div>
-        <div className="text-stone-500 text-xs">{truncateMiddle(account.address, 5, 5, "...")}</div>
-      </div>
-    </div>
-    <div className={clsx("h-2 w-2 rounded-full", selected ? "bg-stone-200" : "bg-stone-800")} />
-  </div>
-)
+export const SignIn: React.FC<Props> = ({ accounts, onCancel, onSignedIn }) => {
+  const { dismiss, toast } = useToast()
 
-export const Accounts: React.FC<Props> = ({ accounts, onCancel }) => {
-  const { toast } = useToast()
   // auto select if only 1 account is connected
   const [selectedAccount, setSelectedAccount] = useState<InjectedAccountWithMeta | undefined>(
     accounts.length === 0 ? accounts[0] : undefined
@@ -45,7 +24,8 @@ export const Accounts: React.FC<Props> = ({ accounts, onCancel }) => {
   const [signingIn, setSigningIn] = useState(false)
 
   const handleSignIn = async () => {
-    if (!selectedAccount) return
+    dismiss()
+    if (!selectedAccount) throw new Error("No account selected!")
 
     const address = Address.fromSs58(selectedAccount.address ?? "")
     if (!address)
@@ -60,24 +40,47 @@ export const Accounts: React.FC<Props> = ({ accounts, onCancel }) => {
       const { nonce } = data
 
       const siwsMessage = new SiwsMessage({
-        domain: "SIWS Example App",
-        uri: "siws.talisman.xyz",
+        domain: SIWS_DOMAIN,
+        uri: SIWS_DOMAIN,
         // use prefix of chain your dapp is on:
         address: address.toSs58(0),
         nonce,
         statement: "Welcome to SIWS! Sign in to see how it works.",
         chainName: "Polkadot",
+        // expires in 2 mins
+        expirationTime: new Date().getTime() + 2 * 60 * 1000,
       })
 
-      const signature = await siwsMessage.sign(selectedAccount.meta.source)
+      const signed = await siwsMessage.sign(selectedAccount.meta.source)
 
-      await fetch("/api/verify")
+      const verifyRes = await fetch("/api/verify", {
+        method: "POST",
+        body: JSON.stringify({ ...signed, address: address.toSs58(0) }),
+      })
+      const verified = await verifyRes.json()
+      if (verified.error) throw new Error(verified.error)
+
+      // Hooray we're signed in!
+      onSignedIn(selectedAccount, verified.jwtToken)
     } catch (e: any) {
-      toast(e?.message ?? "An error occurred")
+      toast({
+        title: "Uh oh! Couldn't sign in.",
+        description: e?.message ?? "An error occurred",
+        variant: "destructive",
+        action: (
+          <ToastAction altText="Try Again" onClick={handleSignIn}>
+            Try Again
+          </ToastAction>
+        ),
+      })
     } finally {
       setSigningIn(false)
     }
   }
+
+  // dismiss toast when sign in flow is exited
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => () => dismiss(), [])
 
   return (
     <div className="h-full flex flex-1 flex-col">
@@ -90,7 +93,10 @@ export const Accounts: React.FC<Props> = ({ accounts, onCancel }) => {
               key={account.address}
               account={account}
               selected={selectedAccount?.address === account.address}
-              onSelect={() => setSelectedAccount(account)}
+              onSelect={() => {
+                dismiss()
+                setSelectedAccount(account)
+              }}
             />
           ))
         ) : (

@@ -1,3 +1,5 @@
+import { Address } from "./utils"
+
 export class SiwsMessage {
   /**RFC 4501 dns authority that is requesting the signing. */
   domain: string
@@ -14,7 +16,7 @@ export class SiwsMessage {
   /**System-specific identifier for  */
   chainId?: number
   /**timestamp that indicates when the signed authentication message is no longer valid. */
-  expirationTime?: string
+  expirationTime?: number
   /**ISO 8601 datetime string of the current time. */
   issuedAt?: number
 
@@ -28,6 +30,8 @@ export class SiwsMessage {
     this.chainName = param.chainName
     this.expirationTime = param.expirationTime
     this.issuedAt = param.issuedAt
+
+    this.validateMessage()
   }
 
   get asJson() {
@@ -84,24 +88,26 @@ export class SiwsMessage {
    * Utility function that wraps @polkadotjs api.
    * @param source You can get this from injectedAccount.meta.source
    * */
-  async sign(source: string): Promise<string> {
+  async sign(source: string): Promise<{ signature: string; message: string }> {
     const { web3FromSource } = await import("@polkadot/extension-dapp")
     const injector = await web3FromSource(source)
     if (!injector.signer.signRaw) throw new Error("Wallet does not support signing message.")
 
+    const message = this.prepareMessage()
     const { signature } = await injector.signer.signRaw({
       address: this.address,
       data: this.prepareMessage(),
       type: "payload",
     })
 
-    return signature
+    return { signature, message }
   }
 
   private validateMessage() {
     if (!this.domain || this.domain.length === 0) throw new Error("SIWS Error: domain is required")
 
-    // TODO: validate address is validate substrate address
+    const address = Address.fromSs58(this.address)
+    if (!address) throw new Error("SIWS Error: address is not a valid substrate address")
 
     if (!this.uri || this.uri.length === 0) throw new Error("SIWS Error: uri is required")
 
@@ -116,8 +122,10 @@ export class SiwsMessage {
       const expirationTimeDate = new Date(this.expirationTime)
       if (isNaN(expirationTimeDate.getTime()))
         throw new Error("SIWS Error: expirationTime is not a valid date")
+      if (this.issuedAt && expirationTimeDate.getTime() <= new Date(this.issuedAt).getTime())
+        throw new Error("SIWS Error: expirationTime must be greater than issuedAt")
       if (expirationTimeDate.getTime() <= new Date().getTime())
-        throw new Error("SIWS Error: expirationTime must be after issuedAt")
+        throw new Error("SIWS Error: message has expired!")
     }
   }
 }
