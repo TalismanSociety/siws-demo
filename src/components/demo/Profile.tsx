@@ -1,9 +1,9 @@
 import truncateMiddle from "truncate-middle"
-import { Button } from "../ui/button"
-import Identicon from "@polkadot/react-identicon"
 import { InjectedAccountWithMeta } from "@polkadot/extension-inject/types"
+import Identicon from "@polkadot/react-identicon"
 import { CopyIcon, ExitIcon } from "@radix-ui/react-icons"
 import { useProtectedService } from "../../hooks/useProtectedService"
+import { Button } from "../ui/button"
 import { Skeleton } from "../ui/skeleton"
 
 type Props = {

@@ -1,8 +1,7 @@
+import { useEffect, useState } from "react"
 import { InjectedAccountWithMeta } from "@polkadot/extension-inject/types"
 import { Button } from "@/components/ui/button"
-import { useEffect, useState } from "react"
-import { SiwsMessage } from "../../siws/SiwsMessage"
-import { Address } from "../../siws/utils"
+import { Address, SiwsMessage } from "siws"
 import { useToast } from "../ui/use-toast"
 import { Account } from "./Account"
 import { ToastAction } from "../ui/toast"
@@ -24,17 +23,19 @@ export const SignIn: React.FC<Props> = ({ accounts, onCancel, onSignedIn }) => {
   const [signingIn, setSigningIn] = useState(false)
 
   const handleSignIn = async () => {
-    dismiss()
-    if (!selectedAccount) throw new Error("No account selected!")
-
-    const address = Address.fromSs58(selectedAccount.address ?? "")
-    if (!address)
-      return toast({
-        title: "Invalid address",
-        description: "Your address is not a valid Substrate address.",
-      })
     try {
+      dismiss()
+      if (!selectedAccount) throw new Error("No account selected!")
+
+      const address = Address.fromSs58(selectedAccount.address ?? "")
+      if (!address)
+        return toast({
+          title: "Invalid address",
+          description: "Your address is not a valid Substrate address.",
+        })
+
       setSigningIn(true)
+      // request nonce from server
       const nonceRes = await fetch("/api/nonce")
       const data = await nonceRes.json()
       const { nonce } = data
@@ -51,7 +52,9 @@ export const SignIn: React.FC<Props> = ({ accounts, onCancel, onSignedIn }) => {
         expirationTime: new Date().getTime() + 2 * 60 * 1000,
       })
 
-      const signed = await siwsMessage.sign(selectedAccount.meta.source)
+      const { web3FromSource } = await import("@polkadot/extension-dapp")
+      const injectedExtension = await web3FromSource(selectedAccount.meta.source)
+      const signed = await siwsMessage.sign(injectedExtension)
 
       const verifyRes = await fetch("/api/verify", {
         method: "POST",

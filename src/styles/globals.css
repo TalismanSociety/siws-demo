@@ -1,4 +1,5 @@
 @tailwind base;
+
 body {
   @apply bg-stone-950;
 }
@@ -9,42 +10,43 @@ body {
   padding: 2px;
 }
 
-/* Track */
+/* Scrollbar Track */
 ::-webkit-scrollbar-track {
   background: rgba(0, 0, 0, 0);
   padding: 2px;
 }
 
-/* Handle */
+/* Scrollbar Handle */
 ::-webkit-scrollbar-thumb {
   @apply bg-stone-200/20 rounded-md;
 }
 
-/* Handle on hover */
+/* Scrollbar Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
   @apply bg-stone-200;
 }
 
-.talisman-brand > a:first-child {
+/* Made by Talisman class names */
+.made-by-talisman > a:first-child {
   @apply text-stone-200/50;
   background: linear-gradient(90deg, #ed726d, #ee94f9);
   background-clip: text;
   -webkit-background-clip: text;
 }
 
-.talisman-brand > a:last-child {
+.made-by-talisman > a:last-child {
   @apply text-stone-200/50;
   background: linear-gradient(90deg, #918ff8, #cefd9c);
   background-clip: text;
   -webkit-background-clip: text;
 }
 
-.talisman-brand:hover > a {
+.made-by-talisman:hover > a {
   transition: 300ms ease-in-out;
 }
 
-.talisman-brand:hover > a:first-child,
-.talisman-brand:hover > a:last-child {
+.made-by-talisman:hover > a:first-child,
+.made-by-talisman:hover > a:last-child {
   color: transparent;
 }
 

@@ -1,12 +1,11 @@
-import dynamic from "next/dynamic"
-
-import { InjectedAccountWithMeta } from "@polkadot/extension-inject/types"
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
+import { InjectedAccountWithMeta } from "@polkadot/extension-inject/types"
 
 type Props = {
   onAccounts: (accounts: InjectedAccountWithMeta[]) => void
 }
+
 export const ConnectWallet: React.FC<Props> = ({ onAccounts }) => {
   const [connecting, setConnecting] = useState(false)
 

@@ -1,8 +1,8 @@
-import { Demo } from "../components/demo"
-import { Button } from "../components/ui/button"
-import { W3FLogo } from "../../public/assets/W3FLogo"
-import { MadeByTalisman } from "../../public/assets/MadeByTalisman"
-import { TalismanLogo } from "../../public/assets/TalismanLogo"
+import { Demo } from "@/components/demo"
+import { Button } from "@/components/ui/button"
+import { W3FLogo } from "@/components/assets/W3FLogo"
+import { MadeByTalisman } from "@/components/assets/MadeByTalisman"
+import { TalismanLogo } from "@/components/assets/TalismanLogo"
 
 export default function Home() {
   return (
@@ -16,15 +16,19 @@ export default function Home() {
           </p>
           <p className="text-stone-500">By the Signet team at Talisman</p>
           <div className="flex items-center gap-4 mt-4">
-            <Button variant="outline" size="lg">
-              Docs
-            </Button>
-            <Button variant="outline" size="lg">
-              Github
-            </Button>
-            <Button variant="outline" size="lg">
+            <a href="https://siws-docs.pages.dev/">
+              <Button variant="outline" size="lg">
+                Docs
+              </Button>
+            </a>
+            <a href="https://github.com/TalismanSociety/siws">
+              <Button variant="outline" size="lg">
+                Github
+              </Button>
+            </a>
+            {/* <Button variant="outline" size="lg">
               Contact
-            </Button>
+            </Button> */}
           </div>
           <div className="text-white mt-8 lg:mt-auto grid grid-cols-2 items-center gap-8 max-w-[280px] px-4">
             <W3FLogo />

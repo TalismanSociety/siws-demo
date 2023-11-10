@@ -22,6 +22,7 @@
     "next": "14.0.1",
     "react": "^18",
     "react-dom": "^18",
+    "siws": "file:../siws",
     "tailwind-merge": "^2.0.0",
     "tailwindcss-animate": "^1.0.7",
     "truncate-middle": "^1.0.6"

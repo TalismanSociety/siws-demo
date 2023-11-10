@@ -1,7 +1,7 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next"
 import jwt from "jsonwebtoken"
-import { parseMessage, verifySIWS } from "../../siws"
+import { parseMessage, verifySIWS } from "siws"
 import { SIWS_DOMAIN } from "../../lib/constants"
 
 type Data = {
@@ -19,11 +19,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     const { signature, message, address } = JSON.parse(req.body)
 
     // verify that signature is valid
-    const verification = await verifySIWS(message, signature, address)
-    if (!verification.isValid) return res.status(401).json({ error: " Invalid signature!" })
-
-    // make sure the signed message is valid:
-    const siwsMessage = parseMessage(message)
+    const siwsMessage = await verifySIWS(message, signature, address)
 
     // validate that nonce is correct to prevent replay attack
     if (nonce !== siwsMessage.nonce)

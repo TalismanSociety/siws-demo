@@ -1,7 +1,7 @@
-import { InjectedAccountWithMeta } from "@polkadot/extension-inject/types"
-import Identicon from "@polkadot/react-identicon"
 import clsx from "clsx"
 import truncateMiddle from "truncate-middle"
+import { InjectedAccountWithMeta } from "@polkadot/extension-inject/types"
+import Identicon from "@polkadot/react-identicon"
 
 type Props = {
   onSelect: () => void
