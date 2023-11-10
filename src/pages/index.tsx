@@ -16,14 +16,19 @@ export default function Home() {
           </p>
           <p className="text-stone-500">By the Signet team at Talisman</p>
           <div className="flex items-center gap-4 mt-4">
-            <a href="https://siws-docs.pages.dev/">
+            <a href="https://siws-docs.pages.dev/" target="_blank" rel="noreferrer">
               <Button variant="outline" size="lg">
                 Docs
               </Button>
             </a>
-            <a href="https://github.com/TalismanSociety/siws">
+            <a href="https://github.com/TalismanSociety/siws" target="_blank" rel="noreferrer">
               <Button variant="outline" size="lg">
                 Github
+              </Button>
+            </a>
+            <a href="https://github.com/TalismanSociety/siws-demo" target="_blank" rel="noreferrer">
+              <Button variant="outline" size="lg">
+                Demo App
               </Button>
             </a>
             {/* <Button variant="outline" size="lg">
