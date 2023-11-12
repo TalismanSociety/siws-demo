@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { InjectedAccountWithMeta } from "@polkadot/extension-inject/types"
 import { Button } from "@/components/ui/button"
-import { Address, SiwsMessage } from "siws"
+import { Address, SiwsMessage } from "@talismn/siws"
 import { useToast } from "../ui/use-toast"
 import { Account } from "./Account"
 import { ToastAction } from "../ui/toast"
