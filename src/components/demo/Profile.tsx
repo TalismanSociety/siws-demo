@@ -37,7 +37,7 @@ export const Profile: React.FC<Props> = ({ account, jwtToken, onSignOut }) => {
         {loading ? (
           <Skeleton className="w-44 h-6" />
         ) : (
-          <p className="text-center">
+          <p className="text-center select-text">
             {randomText ?? <span className="text-center text-gray-500">...</span>}
           </p>
         )}

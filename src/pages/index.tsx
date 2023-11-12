@@ -46,7 +46,7 @@ export default function Home() {
             <TalismanLogo />
           </div>
         </div>
-        <div className="w-full max-w-[380px]">
+        <div className="w-full max-w-[380px] select-none">
           <Demo />
         </div>
       </div>
