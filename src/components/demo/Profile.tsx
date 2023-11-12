@@ -1,7 +1,7 @@
 import truncateMiddle from "truncate-middle"
 import { InjectedAccountWithMeta } from "@polkadot/extension-inject/types"
 import Identicon from "@polkadot/react-identicon"
-import { CopyIcon, ExitIcon } from "@radix-ui/react-icons"
+import { ExitIcon } from "@radix-ui/react-icons"
 import { useProtectedService } from "../../hooks/useProtectedService"
 import { Button } from "../ui/button"
 import { Skeleton } from "../ui/skeleton"
@@ -29,17 +29,27 @@ export const Profile: React.FC<Props> = ({ account, jwtToken, onSignOut }) => {
           <ExitIcon />
         </Button>
       </div>
-      <p className="text-stone-500 mt-4">
-        You&apos;re signed in! Try generating some random text from our protected service.
+      <p className="text-stone-500 mt-4 text-sm">
+        You are signed in with your Polkadot account and can use our protected API to generate
+        random text!
       </p>
-      <div className="p-4 bg-stone-900 rounded-md my-4 text-stone-200">
-        {loading ? <Skeleton className="w-44 h-6" /> : <p>{randomText ?? "..."}</p>}
+      <div className="p-4 bg-stone-900 rounded-md my-4 text-stone-200 flex items-center justify-center">
+        {loading ? (
+          <Skeleton className="w-44 h-6" />
+        ) : (
+          <p className="text-center">
+            {randomText ?? <span className="text-center text-gray-500">...</span>}
+          </p>
+        )}
       </div>
       <div className="grid gap-3">
         <Button onClick={() => generate(jwtToken)}>Generate Random Text</Button>
         <Button onClick={() => generate()} variant="outline">
           Generate as Anonymous User
         </Button>
+        <p className="text-stone-500 text-center text-xs">
+          Generate as Anonymous User to see how the API is protected by SIWS.
+        </p>
       </div>
     </div>
   )

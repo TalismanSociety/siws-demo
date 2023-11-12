@@ -51,7 +51,7 @@ export const Demo = () => {
 
   return (
     <div className="w-full">
-      <div className="border-stone-800 border p-4 rounded-xl w-full h-96 flex flex-col flex-1">
+      <div className="border-stone-800 border p-4 rounded-xl w-full min-h-[384px] sm:h-96 flex flex-col flex-1">
         {signedInWith && !!jwtToken ? (
           <Profile account={signedInWith} jwtToken={jwtToken} onSignOut={handleSignOut} />
         ) : accounts ? (

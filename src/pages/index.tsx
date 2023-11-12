@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button"
 import { W3FLogo } from "@/components/assets/W3FLogo"
 import { MadeByTalisman } from "@/components/assets/MadeByTalisman"
 import { TalismanLogo } from "@/components/assets/TalismanLogo"
+import { CopyIcon } from "@radix-ui/react-icons"
 
 export default function Home() {
   return (
@@ -16,7 +17,7 @@ export default function Home() {
           </p>
           <p className="text-stone-500">By the Signet team at Talisman</p>
           <div className="flex items-center gap-4 mt-4">
-            <a href="https://siws-docs.pages.dev/" target="_blank" rel="noreferrer">
+            <a href="https://docs.siws.xyz/" target="_blank" rel="noreferrer">
               <Button variant="outline" size="lg">
                 Docs
               </Button>
@@ -31,9 +32,14 @@ export default function Home() {
                 Demo App
               </Button>
             </a>
-            {/* <Button variant="outline" size="lg">
-              Contact
-            </Button> */}
+          </div>
+          <div className="bg-zinc-900 p-1 px-3 my-4 text-zinc-500 border border-zinc-800 rounded-md display flex items-center gap-4">
+            <p>
+              <span className="text-stone-200 mr-1">npm</span> install @talismn/siws
+            </p>
+            <Button size="icon" variant="outline">
+              <CopyIcon />
+            </Button>
           </div>
           <div className="text-white mt-8 lg:mt-auto grid grid-cols-2 items-center gap-8 max-w-[280px] px-4">
             <W3FLogo />

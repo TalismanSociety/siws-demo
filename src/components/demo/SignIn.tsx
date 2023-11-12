@@ -18,7 +18,7 @@ export const SignIn: React.FC<Props> = ({ accounts, onCancel, onSignedIn }) => {
 
   // auto select if only 1 account is connected
   const [selectedAccount, setSelectedAccount] = useState<InjectedAccountWithMeta | undefined>(
-    accounts.length === 0 ? accounts[0] : undefined
+    accounts.length === 1 ? accounts[0] : undefined
   )
   const [signingIn, setSigningIn] = useState(false)
 

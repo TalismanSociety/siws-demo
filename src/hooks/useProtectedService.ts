@@ -19,6 +19,7 @@ export const useProtectedService = () => {
         if (data.error) throw new Error(data.error)
         setRandomText(data.randomText)
       } catch (e: any) {
+        setRandomText(null)
         toast({
           title: "Failed to generate random text",
           description: e.message,
