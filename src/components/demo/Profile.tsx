@@ -1,10 +1,12 @@
 import truncateMiddle from "truncate-middle"
 import { InjectedAccountWithMeta } from "@polkadot/extension-inject/types"
 import Identicon from "@polkadot/react-identicon"
-import { ExitIcon } from "@radix-ui/react-icons"
+import { CopyIcon, ExitIcon } from "@radix-ui/react-icons"
 import { useProtectedService } from "../../hooks/useProtectedService"
 import { Button } from "../ui/button"
 import { Skeleton } from "../ui/skeleton"
+import { copyToClipboard } from "../../lib/utils"
+import { useToast } from "../ui/use-toast"
 
 type Props = {
   account: InjectedAccountWithMeta
@@ -13,6 +15,17 @@ type Props = {
 }
 export const Profile: React.FC<Props> = ({ account, jwtToken, onSignOut }) => {
   const { randomText, loading, generate } = useProtectedService()
+  const { toast } = useToast()
+
+  const handleCopy = () => {
+    copyToClipboard(randomText ?? "")
+    toast({
+      title: "Copied!",
+      description: `Copied ${randomText} to clipboard.`,
+      action: <CopyIcon />,
+    })
+  }
+
   return (
     <div className="flex flex-col">
       <div className="flex items-center justify-between">
@@ -33,14 +46,21 @@ export const Profile: React.FC<Props> = ({ account, jwtToken, onSignOut }) => {
         You are signed in with your Polkadot account and can use our protected API to generate
         random text!
       </p>
-      <div className="p-4 bg-stone-900 rounded-md my-4 text-stone-200 flex items-center justify-center">
+      <div className="p-2 px-3 bg-zinc-900 rounded-md my-4 text-stone-200 flex items-center justify-between">
         {loading ? (
           <Skeleton className="w-44 h-6" />
         ) : (
           <p className="text-center select-text">
-            {randomText ?? <span className="text-center text-gray-500">...</span>}
+            {randomText ?? (
+              <span className="text-center text-gray-500 text-xs">
+                Click &apos;Generate Random Text&apos; to generate
+              </span>
+            )}
           </p>
         )}
+        <Button size="icon" variant="outline" disabled={!randomText} onClick={handleCopy}>
+          <CopyIcon height={12} width={12} />
+        </Button>
       </div>
       <div className="grid gap-3">
         <Button onClick={() => generate(jwtToken)}>Generate Random Text</Button>

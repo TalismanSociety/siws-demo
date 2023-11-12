@@ -4,8 +4,19 @@ import { W3FLogo } from "@/components/assets/W3FLogo"
 import { MadeByTalisman } from "@/components/assets/MadeByTalisman"
 import { TalismanLogo } from "@/components/assets/TalismanLogo"
 import { CopyIcon } from "@radix-ui/react-icons"
+import { copyToClipboard } from "../lib/utils"
+import { useToast } from "../components/ui/use-toast"
 
 export default function Home() {
+  const { toast } = useToast()
+  const handleCopy = () => {
+    copyToClipboard("npm install @talismn/siws" ?? "")
+    toast({
+      title: "Copied!",
+      description: `npm install @talismn/siws`,
+      action: <CopyIcon />,
+    })
+  }
   return (
     <main className={`flex min-h-screen flex-col items-center justify-between py-24 px-4 lg:px-24`}>
       <div className="w-full max-w-4xl flex gap-8 flex-col lg:flex-row items-center lg:items-start">
@@ -33,12 +44,12 @@ export default function Home() {
               </Button>
             </a>
           </div>
-          <div className="bg-zinc-900 p-1 px-3 my-4 text-zinc-500 border border-zinc-800 rounded-md display flex items-center gap-4">
+          <div className="bg-zinc-900 p-2 pl-3 my-4 text-zinc-500 border border-zinc-800 rounded-md display flex items-center gap-4">
             <p>
               <span className="text-stone-200 mr-1">npm</span> install @talismn/siws
             </p>
-            <Button size="icon" variant="outline">
-              <CopyIcon />
+            <Button size="icon" variant="outline" onClick={handleCopy}>
+              <CopyIcon height={12} width={12} />
             </Button>
           </div>
           <div className="text-white mt-8 lg:mt-auto grid grid-cols-2 items-center gap-8 max-w-[280px] px-4">
