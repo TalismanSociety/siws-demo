@@ -27,7 +27,7 @@ export const Profile: React.FC<Props> = ({ account, jwtToken, onSignOut }) => {
   }
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col h-full">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
           <Identicon value={account.address} size={32} theme="polkadot" />
@@ -42,35 +42,33 @@ export const Profile: React.FC<Props> = ({ account, jwtToken, onSignOut }) => {
           <ExitIcon />
         </Button>
       </div>
-      <p className="text-stone-500 mt-4 text-sm">
-        You are signed in with your Polkadot account and can use our protected API to generate
-        random text!
+      <p className="text-stone-200 mt-4 text-sm">
+        You are securely signed in with your Polkadot account. Call a protected function that
+        returns randomly generated text.
       </p>
-      <div className="p-2 px-3 bg-zinc-900 rounded-md my-4 text-stone-200 flex items-center justify-between">
-        {loading ? (
-          <Skeleton className="w-44 h-6" />
-        ) : (
-          <p className="text-center select-text">
-            {randomText ?? (
-              <span className="text-center text-gray-500 text-xs">
-                Click &apos;Generate Random Text&apos; to generate
-              </span>
-            )}
-          </p>
-        )}
-        <Button size="icon" variant="outline" disabled={!randomText} onClick={handleCopy}>
-          <CopyIcon height={12} width={12} />
-        </Button>
-      </div>
-      <div className="grid gap-3">
+
+      <div className="grid gap-3 mt-4">
         <Button onClick={() => generate(jwtToken)}>Generate Random Text</Button>
-        <Button onClick={() => generate()} variant="outline">
-          Generate as Anonymous User
-        </Button>
-        <p className="text-stone-500 text-center text-xs">
-          Generate as Anonymous User to see how the API is protected by SIWS.
-        </p>
+        <div className="h-8 w-full flex items-center justify-center">
+          {!!loading ? (
+            <Skeleton className="w-44 h-6" />
+          ) : !!randomText ? (
+            <div className="flex items-center justify-center w-full gap-3">
+              <p className="text-zinc-400">{randomText}</p>
+              <Button size="icon" variant="outline" onClick={handleCopy}>
+                <CopyIcon height={12} width={12} />
+              </Button>
+            </div>
+          ) : null}
+        </div>
       </div>
+      <p className="text-stone-500 text-center text-sm mt-auto">
+        Click{" "}
+        <span className="text-white cursor-pointer hover:text-stone-400" onClick={() => generate()}>
+          here
+        </span>{" "}
+        to generate as a logged out user to see how the API is protected by SIWS.
+      </p>
     </div>
   )
 }

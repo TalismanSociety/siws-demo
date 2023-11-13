@@ -4,10 +4,11 @@ import { useToast } from "../components/ui/use-toast"
 export const useProtectedService = () => {
   const [randomText, setRandomText] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
-  const { toast } = useToast()
+  const { dismiss, toast } = useToast()
 
   const generate = useCallback(
     async (jwtToken?: string) => {
+      dismiss()
       setLoading(true)
       try {
         const res = await fetch("/api/protected", {
@@ -29,7 +30,7 @@ export const useProtectedService = () => {
         setLoading(false)
       }
     },
-    [toast]
+    [dismiss, toast]
   )
 
   return { generate, randomText, loading }

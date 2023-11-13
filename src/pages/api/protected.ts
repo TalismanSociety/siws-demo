@@ -12,7 +12,7 @@ type Data = {
 export default function handler(req: NextApiRequest, res: NextApiResponse<Data>) {
   const authorisationHeader = req.headers["authorisation"]
   if (typeof authorisationHeader !== "string")
-    return res.status(401).json({ error: "Unauthenticated!" })
+    return res.status(401).json({ error: "You are not logged in!" })
 
   const jwtToken = authorisationHeader.split(" ")[1]
 
@@ -22,6 +22,6 @@ export default function handler(req: NextApiRequest, res: NextApiResponse<Data>)
 
     res.status(200).json({ randomText: crypto.randomBytes(8).toString("hex") })
   } catch (e) {
-    res.status(401).json({ error: "Unauthenticated!" })
+    res.status(401).json({ error: "You are not logged in!" })
   }
 }
