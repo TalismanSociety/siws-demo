@@ -26,9 +26,9 @@ export default function Home() {
                 Github
               </Button>
             </a>
-            <a href="https://github.com/TalismanSociety/siws-demo" target="_blank" rel="noreferrer">
+            <a href="https://matrix.to/#/#siws-general:matrix.org" target="_blank" rel="noreferrer">
               <Button variant="outline" size="lg">
-                Demo App
+                Contact
               </Button>
             </a>
           </div>
