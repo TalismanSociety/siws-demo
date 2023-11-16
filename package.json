@@ -17,6 +17,7 @@
     "@radix-ui/react-toast": "^1.1.5",
     "@talismn/siws": "^0.0.1",
     "@types/jsonwebtoken": "^9.0.5",
+    "@vercel/analytics": "^1.1.1",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",
     "jsonwebtoken": "^9.0.2",
