@@ -32,7 +32,7 @@ export default function Home() {
               </Button>
             </a>
           </div>
-          <div className="text-white mt-8 lg:mt-auto grid grid-cols-2 items-center gap-8 max-w-[280px] px-4">
+          <div className="text-white mt-8 lg:mt-auto grid grid-cols-2 items-center gap-8 max-w-[320px] px-4">
             <W3FLogo />
             <TalismanLogo />
           </div>
