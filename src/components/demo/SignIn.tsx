@@ -42,7 +42,7 @@ export const SignIn: React.FC<Props> = ({ accounts, onCancel, onSignedIn }) => {
 
       const siwsMessage = new SiwsMessage({
         domain: SIWS_DOMAIN,
-        uri: SIWS_DOMAIN,
+        uri: `https://${SIWS_DOMAIN}`,
         // use prefix of chain your dapp is on:
         address: address.toSs58(0),
         nonce,
