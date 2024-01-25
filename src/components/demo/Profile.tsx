@@ -7,6 +7,8 @@ import { Button } from "../ui/button"
 import { Skeleton } from "../ui/skeleton"
 import { copyToClipboard } from "../../lib/utils"
 import { useToast } from "../ui/use-toast"
+import { useAzeroID } from "@/context/AzeroIDResolver"
+import { useMemo } from "react"
 
 type Props = {
   account: InjectedAccountWithMeta
@@ -16,6 +18,7 @@ type Props = {
 export const Profile: React.FC<Props> = ({ account, jwtToken, onSignOut }) => {
   const { randomText, loading, generate } = useProtectedService()
   const { toast } = useToast()
+  const { resolve } = useAzeroID()
 
   const handleCopy = () => {
     copyToClipboard(randomText ?? "")
@@ -26,6 +29,8 @@ export const Profile: React.FC<Props> = ({ account, jwtToken, onSignOut }) => {
     })
   }
 
+  const a0id = useMemo(() => resolve(account.address)?.a0id, [account.address, resolve])
+
   return (
     <div className="flex flex-col h-full">
       <div className="flex items-center justify-between">
@@ -33,9 +38,7 @@ export const Profile: React.FC<Props> = ({ account, jwtToken, onSignOut }) => {
           <Identicon value={account.address} size={32} theme="polkadot" />
           <div className="flex flex-col">
             <div className="text-white text-base">{account.meta.name}</div>
-            <div className="text-stone-500 text-xs">
-              {truncateMiddle(account.address, 5, 5, "...")}
-            </div>
+            <div className="text-stone-500 text-xs">{a0id ?? truncateMiddle(account.address, 5, 5, "...")}</div>
           </div>
         </div>
         <Button variant="outline" size="icon" onClick={onSignOut}>
@@ -43,8 +46,8 @@ export const Profile: React.FC<Props> = ({ account, jwtToken, onSignOut }) => {
         </Button>
       </div>
       <p className="text-stone-200 mt-4 text-sm">
-        You are securely signed in with your Polkadot account. Call a protected function that
-        returns randomly generated text.
+        You are securely signed in with your Polkadot account. Call a protected function that returns randomly generated
+        text.
       </p>
 
       <div className="grid gap-3 mt-4">

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import { InjectedAccountWithMeta } from "@polkadot/extension-inject/types"
 import { Button } from "@/components/ui/button"
+import { useAzeroID } from "@/context/AzeroIDResolver"
 import { Address, SiwsMessage } from "@talismn/siws"
 import { useToast } from "../ui/use-toast"
 import { Account } from "./Account"
@@ -15,6 +16,7 @@ type Props = {
 
 export const SignIn: React.FC<Props> = ({ accounts, onCancel, onSignedIn }) => {
   const { dismiss, toast } = useToast()
+  const { resolve } = useAzeroID()
 
   // auto select if only 1 account is connected
   const [selectedAccount, setSelectedAccount] = useState<InjectedAccountWithMeta | undefined>(
@@ -50,6 +52,7 @@ export const SignIn: React.FC<Props> = ({ accounts, onCancel, onSignedIn }) => {
         chainName: "Polkadot",
         // expires in 2 mins
         expirationTime: new Date().getTime() + 2 * 60 * 1000,
+        azeroId: resolve(address.toSs58())?.a0id,
       })
 
       const { web3FromSource } = await import("@polkadot/extension-dapp")

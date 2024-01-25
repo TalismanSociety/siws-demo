@@ -1,5 +1,3 @@
-import Image from "next/image"
-
 export const W3FLogo: React.FC = () => (
   <a href="https://grants.web3.foundation/" target="_blank" rel="noreferrer">
     <svg viewBox="0 0 348 119" fill="none" xmlns="http://www.w3.org/2000/svg">

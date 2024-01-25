@@ -8,7 +8,7 @@ export const Demo = () => {
   const [signedInWith, setSignedInWith] = useState<InjectedAccountWithMeta | undefined>()
   const [accounts, setAccounts] = useState<InjectedAccountWithMeta[] | undefined>()
   const [jwtToken, setJwtToken] = useState<string | undefined>()
-
+  const [subscribed, setSubscribed] = useState(false)
   const handleSignedIn = (selectedAccount: InjectedAccountWithMeta, jwtToken: string) => {
     setJwtToken(jwtToken)
     setSignedInWith(selectedAccount)
@@ -21,9 +21,10 @@ export const Demo = () => {
 
   // subscribe to extension changes after first connect
   const subscribeToExtensions = useCallback(async () => {
-    if (accounts === undefined) return
+    if (accounts === undefined || subscribed) return
     const { web3AccountsSubscribe } = await import("@polkadot/extension-dapp")
 
+    setSubscribed(true)
     web3AccountsSubscribe((newAccounts) => {
       // dont update if newAccounts is same as accounts
       const newAddresses = newAccounts.map((account) => account.address).join("")
@@ -33,7 +34,7 @@ export const Demo = () => {
       // update accounts list
       setAccounts(newAccounts)
     })
-  }, [accounts])
+  }, [accounts, subscribed])
 
   useEffect(() => {
     subscribeToExtensions()
